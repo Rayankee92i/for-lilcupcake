@@ -1,54 +1,36 @@
 // script.js
-const textDisplay = document.getElementById('text-display');
-const playButton = document.getElementById('play-button');
+const messageBox = document.getElementById('message-box');
+const message = document.getElementById('message');
+const choices = document.getElementById('choices');
+const tryAgain = document.getElementById('try-again');
 
-// Les messages, leurs couleurs et styles respectifs
-const messages = [
-    {
-        text: "HOUDA AYA",
-        textColor: "black", // Wine red
-        backgroundColor: "gold",
-        duration: 2000
-    },
-    {
-        text: "MY FIRE OPAL",
-        textColor: "#ff4500", // Rouge volcanique
-        backgroundColor: "gold",
-        duration: 3000
-    },
-    {
-        text: "FUCK YOUR ANGER ISSUES ❤️",
-        textColor: "navy", // Navy blue
-        backgroundColor: "gold", // Doré
-        duration: Infinity
-    }
-];
+let lastChoice = null;
 
-let currentMessageIndex = 0;
+document.getElementById('red').addEventListener('click', () => handleChoice('red'));
+document.getElementById('blue').addEventListener('click', () => handleChoice('blue'));
+tryAgain.addEventListener('click', resetGame);
 
-// Fonction pour afficher les messages successivement
-function showMessage() {
-    const message = messages[currentMessageIndex];
-    textDisplay.textContent = message.text;
-    textDisplay.style.color = message.textColor;
-    textDisplay.style.backgroundColor = message.backgroundColor;
-    textDisplay.style.display = "block";
-
-    // Si ce n'est pas le dernier message, continuer
-    if (message.duration !== Infinity) {
-        setTimeout(() => {
-            currentMessageIndex++;
-            showMessage();
-        }, message.duration);
+function handleChoice(choice) {
+    if (choice === lastChoice) {
+        message.textContent = `U've already chosen this one Houda, fuck you <3, try the other one`;
+        tryAgain.style.display = 'block';
+        choices.style.display = 'none';
     } else {
-        // Réafficher le bouton à la fin
-        playButton.style.display = "block";
+        if (lastChoice) {
+            message.textContent = `Fuck you again Houda, but YOU'RE THE SWEETEST ❤️`;
+            choices.style.display = 'none';
+            tryAgain.style.display = 'none';
+        } else {
+            message.textContent = `Fuck u Houda`;
+            tryAgain.style.display = 'block';
+            choices.style.display = 'none';
+        }
+        lastChoice = choice;
     }
 }
 
-// Gestionnaire du clic sur le bouton
-playButton.addEventListener('click', () => {
-    playButton.style.display = "none"; // Masquer le bouton
-    currentMessageIndex = 0; // Réinitialiser
-    showMessage();
-});
+function resetGame() {
+    message.textContent = 'Choose red or blue';
+    choices.style.display = 'block';
+    tryAgain.style.display = 'none';
+}
